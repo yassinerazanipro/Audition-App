@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <audio id="audio" loop></audio>
     <div class="player">
       <!-- Sélection du bruit -->
       <div class="sound-selection">
@@ -35,7 +36,56 @@
         <!-- vide pour l’instant -->
       </div>
     </div>
+    <script>
+      const audio = document.getElementById("audio");
+      const buttons = document.querySelectorAll(".sound-selection button");
 
-    <script src="app.js"></script>
+      const sounds = {
+        "white noise": "white.mp3",
+        "pink noise": "pink.mp3",
+        "brown noise": "brown.mp3",
+      };
+
+      let currentSound = null;
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const sound = button.dataset.sound;
+          audio.src = sounds[sound];
+          currentSound = sound;
+        });
+      });
+    </script>
+    <script>
+      const playBtn = document.getElementById("play");
+
+      playBtn.addEventListener("click", () => {
+        if (audio.src) {
+          audio.play();
+        } else {
+          alert("Choisis un son d'abord");
+        }
+      });
+    </script>
+    <script>
+      const volume = document.getElementById("volume");
+
+      volume.addEventListener("input", () => {
+        audio.volume = volume.value;
+      });
+    </script>
+    <script>
+      const timeDisplay = document.getElementById("time");
+
+      audio.addEventListener("timeupdate", () => {
+        const minutes = Math.floor(audio.currentTime / 60);
+        const seconds = Math.floor(audio.currentTime % 60);
+
+        timeDisplay.textContent =
+          String(minutes).padStart(2, "0") +
+          ":" +
+          String(seconds).padStart(2, "0");
+      });
+    </script>
   </body>
 </html>
